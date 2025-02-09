@@ -41,6 +41,10 @@ public class RecommendationService extends AbstractECommerceCRUDService<Recommen
 
 	}
 
+	public void deleteRecommendationsByProductId(final int productId) {
+		repository.deleteAll(repository.findByProductId(productId));
+	}
+
 	@Override
 	protected Function<Integer, Optional<Recommendation>> provideFindByIdFunction() {
 		return this.repository::findByRecommendationId;

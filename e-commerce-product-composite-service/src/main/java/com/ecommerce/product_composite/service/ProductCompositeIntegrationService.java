@@ -195,9 +195,9 @@ public class ProductCompositeIntegrationService implements ProductAPI, Recommend
 	}
 
 	@Override
-	public void deleteRecommendations(final int productId) {
+	public void deleteRecommendationsByProductId(final int productId) {
 		try {
-			final String url = recommendationServiceUrl + "?productId=" + productId;
+			final String url = recommendationServiceUrl + "/" + productId;
 //			log.debug("Will call the deleteRecommendations API on URL: {}", url);
 
 			restTemplate.delete(url);
@@ -227,7 +227,7 @@ public class ProductCompositeIntegrationService implements ProductAPI, Recommend
 	@Override
 	public void deleteReviewsByProductId(final int productId) {
 		try {
-			final String url = reviewServiceUrl + "?productId=" + productId;
+			final String url = reviewServiceUrl + "/" + productId;
 //			log.debug("Will call the deleteReviews API on URL: {}", url);
 
 			restTemplate.delete(url);

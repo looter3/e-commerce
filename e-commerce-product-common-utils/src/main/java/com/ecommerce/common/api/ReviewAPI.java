@@ -24,7 +24,7 @@ public interface ReviewAPI {
 	@PostMapping(value = { "/review", "/review/" }, consumes = "application/json")
 	ReviewDTO createReview(@RequestBody ReviewDTO body);
 
-	@DeleteMapping(value = "/recommendation/{productId}")
+	@DeleteMapping(value = "/review/{productId}")
 	void deleteReviewsByProductId(@PathVariable int productId);
 
 }

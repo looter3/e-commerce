@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Clean
+# Delete core services containers
+docker rmi $(docker images | grep e-commerce)
+# Delete <none>
+docker rmi $(docker images -f "dangling=true" -q)
+
 # Build projects with Maven
 echo 'Build project'
 mvn clean package

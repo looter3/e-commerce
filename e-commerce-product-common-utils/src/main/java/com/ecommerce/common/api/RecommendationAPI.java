@@ -24,7 +24,7 @@ public interface RecommendationAPI {
 	@PostMapping(value = { "/recommendation", "/recommendation/" }, consumes = "application/json")
 	RecommendationDTO createRecommendation(@RequestBody RecommendationDTO body);
 
-	@DeleteMapping(value = "/recommendation/{recommendation}")
-	void deleteRecommendations(@PathVariable int productId);
+	@DeleteMapping(value = "/recommendation/{productId}")
+	void deleteRecommendationsByProductId(@PathVariable int productId);
 
 }

@@ -64,7 +64,7 @@ public class ProductCompositeController implements ProductCompositeAPI {
 	public void deleteProduct(final int productId) {
 		integration.deleteProduct(productId);
 		integration.deleteReviewsByProductId(productId);
-		integration.deleteRecommendations(productId);
+		integration.deleteRecommendationsByProductId(productId);
 	}
 
 	@Override

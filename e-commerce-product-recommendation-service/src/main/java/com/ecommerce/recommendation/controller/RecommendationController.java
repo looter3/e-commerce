@@ -33,8 +33,8 @@ public class RecommendationController implements RecommendationAPI {
 	}
 
 	@Override
-	public void deleteRecommendations(final int productId) {
-		this.service.deleteECommerceEntity(productId);
+	public void deleteRecommendationsByProductId(final int productId) {
+		this.service.deleteRecommendationsByProductId(productId);
 	}
 
 }
