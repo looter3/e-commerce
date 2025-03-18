@@ -1,23 +1,159 @@
-spring.application.name: recommendation-service
-server.port: 7002
+com:
+  ecommerce:
+    topics:
+      create-entity-topic:
+        in: create-recommendation-in
+        out: create-recommendation-out
 
-spring.data.mongodb:
-  host: localhost
-  port: 27017
-  database: recommendation-db
+server:
+  port: 7002
+  error.include-message: always
+
+app.eureka-server: localhost
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${app.eureka-server}:8761/eureka/
+    initialInstanceInfoReplicationIntervalSeconds: 5
+    registryFetchIntervalSeconds: 5
+  instance:
+    leaseRenewalIntervalInSeconds: 5
+    leaseExpirationDurationInSeconds: 5
+
+spring:
+  application:
+    name: recommendation-service
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: recommendation-db
+  kafka:
+    bootstrap-servers: localhost:9092
+    streams:
+      bootstrap-servers: localhost:9092
+      application-id: "recommendation-stream-id"
+
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+
+  cloud:
+    function:
+      definition: messageProcessor
+    stream:
+      defaultBinder: kafka
+      default.contentType: application/json
+      bindings:
+        messageProcessor-in-0:
+          destination: recommendations
+          content-type: application/json
+          group: recommendationsGroup
+          consumer:
+            maxAttempts: 3
+            backOffInitialInterval: 500
+            backOffMaxInterval: 1000
+            backOffMultiplier: 2.0
+      rabbit:
+        bindings:
+          messageProcessor-in-0:
+            consumer:
+              autoBindDlq: true
+              republishToDlq: true
+      kafka:
+        bindings:
+          messageProcessor-in-0:
+            consumer:
+              enableDlq: true
+        binder:
+          brokers: localhost
+          defaultBrokerPort: 9092
+          replication-factor: 1
 
 logging:
   level:
     root: INFO
-    com.ecommerce: DEBUG
+    se.magnus: DEBUG
     org.springframework.data.mongodb.core.MongoTemplate: DEBUG
 
 ---
-spring.config.activate.on-profile: docker
-server.port: 8080
 
-spring.data.mongodb:
-  host: mongodb
-  port: 27017
-#  uri: mongodb://172.17.0.2:27017/recommendation-db
-  database: recommendation-db
+spring.config.activate.on-profile: docker
+server:
+  port: 8080
+  
+app.eureka-server: eureka
+
+spring:
+  data:
+    mongodb:
+      host: mongodb  # Docker container name for MongoDB
+      port: 27017
+      database: recommendation-db
+
+  rabbitmq:
+    host: rabbitmq  # Docker container name for RabbitMQ
+
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: kafka:29092  # Docker-internal Kafka communication
+
+  kafka:
+    bootstrap-servers: kafka:29092  # Connect to Kafka using the internal Docker port
+
+---
+
+spring.config.activate.on-profile: streaming_instance_0
+
+spring:
+  cloud:
+    stream:
+      bindings:
+        messageProcessor-in-0:
+          consumer:
+            instanceIndex: 0
+
+---
+
+spring.config.activate.on-profile: streaming_instance_1
+
+spring:
+  cloud:
+    stream:
+      bindings:
+        messageProcessor-in-0:
+          consumer:
+            instanceIndex: 1
+
+---
+
+spring.config.activate.on-profile: kafka
+
+management:
+  health:
+    rabbit:
+      enabled: false  # Disable RabbitMQ health check in Kafka-only mode
+
+spring:
+  cloud:
+    stream:
+      defaultBinder: kafka
+  kafka:
+    bootstrap-servers: kafka:9092  # Kafka container name for Docker environment
+    properties:
+      reconnect.backoff.ms: 500
+      retry.backoff.ms: 500
+    producer:
+      retries: 2
+      request-timeout-ms: 2000
+      max-block-ms: 3000
+    consumer:
+      max-poll-interval-ms: 15000
+      session-timeout-ms: 10000
+
+  

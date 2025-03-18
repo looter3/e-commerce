@@ -1,14 +1,15 @@
 package com.ecommerce.review.service;
 
-import java.util.Optional;
 import java.util.function.Function;
 
 import org.springframework.stereotype.Service;
 
+import com.ecommerce.common.dao.ECommerceDAO;
 import com.ecommerce.common.dto.ReviewDTO;
 import com.ecommerce.common.service.AbstractECommerceCRUDService;
 import com.ecommerce.review.model.Review;
-import com.ecommerce.review.repository.ReviewRepository;
+
+import reactor.core.publisher.Mono;
 
 /**
  * @author Lorenzo Leccese
@@ -17,22 +18,24 @@ import com.ecommerce.review.repository.ReviewRepository;
  *
  */
 @Service
-public class ReviewService extends AbstractECommerceCRUDService<ReviewDTO, Review, ReviewMapper, ReviewRepository> {
+public class ReviewService extends AbstractECommerceCRUDService<ReviewDTO, Review, ReviewMapper, ECommerceDAO<Review>> {
 
 	private final ReviewMapper mapper;
 
-	public ReviewService(final ReviewRepository repository, final ReviewMapper mapper) {
-		super(repository);
+	public ReviewService(final ECommerceDAO<Review> dao, final ReviewMapper mapper) {
+		super(dao);
 		this.mapper = mapper;
 	}
 
-	public void deleteReviewsByProductId(final int productId) {
-		repository.deleteAll(repository.findByProductId(productId));
+	public Mono<Void> deleteReviewsByProductId(final int productId) {
+//		return repository.deleteAll(repository.findByProductId(productId));
+		return null;
 	}
 
 	@Override
-	protected Function<Integer, Optional<Review>> provideFindByIdFunction() {
-		return this.repository::findByReviewId;
+	protected Function<Integer, Mono<Review>> provideFindByIdFunction() {
+//		return this.repository::findByReviewId;
+		return null;
 	}
 
 	/*-

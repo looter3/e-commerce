@@ -44,4 +44,9 @@ public class Product extends ECommerceEntity {
 		this.weight = weight;
 	}
 
+	@Override
+	public int provideEntityId() {
+		return this.productId;
+	}
+
 }

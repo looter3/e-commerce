@@ -34,4 +34,6 @@ public abstract class ECommerceEntity {
 		this.version = version;
 	}
 
+	public abstract int provideEntityId();
+
 }

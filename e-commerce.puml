@@ -1,0 +1,43 @@
+@startuml
+!include <logos/spring-icon>
+!include <logos/angular-icon>
+!include <logos/kafka>
+!include <C4/C4_Container>
+
+UpdateElementStyle("container", $bgColor=#999999)
+
+Person(pe, "User")
+
+' Frontend
+Container(fr, Frontend, Angular, $sprite="angular-icon,scale=0.7,color=red")
+
+Container(api, API Gateway Service, Spring Boot, $sprite="spring-icon,scale=0.7,color=green")
+' Container(dis, Discovery Service, Spring Boot, $sprite="spring-icon")
+
+' Core microservices
+Container(pas, Product Aggregate Service, Spring Boot, $sprite="spring-icon,scale=0.7,color=green")
+Container(rws, Review Service, Spring Boot, $sprite="spring-icon,scale=0.7,color=green")
+Container(prs, Product Service, Spring Boot, $sprite="spring-icon,scale=0.7,color=green")
+Container(recs, Recommendation Service, Spring Boot, $sprite="spring-icon,scale=0.7,color=green")
+
+Container(oas, Order Aggregate Service, Spring Boot, $sprite="spring-icon,scale=0.7,color=green")
+Container(ors, Order Service, Spring Boot, $sprite="spring-icon,scale=0.7,color=green")
+Container(shs, Shipping Service, Spring Boot, $sprite="spring-icon,scale=0.7,color=green")
+Container(cas, Cart Service, Spring Boot, $sprite="spring-icon,scale=0.7,color=green")
+
+' Define the relationships
+Rel(pe, fr, Uses frontend)
+Rel(fr, api, , HTTP)
+Rel(api, pas, $sprite="kafka,scale=0.5", "")
+Rel(api, oas, $sprite="kafka,scale=0.5", "")
+
+Rel(pas, prs, $sprite="kafka,scale=0.5", "")
+Rel(pas, recs, $sprite="kafka,scale=0.5", "")
+Rel(pas, rws, $sprite="kafka,scale=0.5", "")
+
+Rel(oas, ors, $sprite="kafka,scale=0.5", "")
+Rel(oas, shs, $sprite="kafka,scale=0.5", "")
+Rel(oas, cas, $sprite="kafka,scale=0.5", "")
+
+
+@enduml

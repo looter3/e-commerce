@@ -1,16 +1,18 @@
 package com.ecommerce.common.service;
 
-import java.util.Optional;
 import java.util.function.Function;
 
 import org.yaml.snakeyaml.constructor.DuplicateKeyException;
 
+import com.ecommerce.common.dao.ECommerceDAO;
 import com.ecommerce.common.dto.ECommerceDTO;
 import com.ecommerce.common.entity.ECommerceEntity;
 import com.ecommerce.common.exception.InvalidInputException;
-import com.ecommerce.common.exception.NotFoundException;
 import com.ecommerce.common.mapper.ECommerceEntityMapper;
-import com.ecommerce.common.repository.ECommerceRepository;
+
+import lombok.extern.log4j.Log4j2;
+
+import reactor.core.publisher.Mono;
 
 /**
  * @author Lorenzo Leccese
@@ -18,38 +20,30 @@ import com.ecommerce.common.repository.ECommerceRepository;
  *         7 feb 2025
  *
  */
-//@Log4j2
-//@RequiredArgsConstructor
+@Log4j2
 public abstract class AbstractECommerceCRUDService<
 		DTO extends ECommerceDTO,
 		E extends ECommerceEntity,
 		M extends ECommerceEntityMapper<DTO, E>,
-		R extends ECommerceRepository<E>>
+//		R extends ECommerceRepository<E>,
+		DAO extends ECommerceDAO<E>>
 		implements ECommerceCRUDService<DTO> {
 
-	protected final R repository;
-//	protected final ModelMapper modelMapper;
-//	protected final M mapper;
-	private final Function<Integer, Optional<E>> findById;
-//	private final Class<DTO> dtoClass;
-//	private final Class<E> entityClass;
+//	protected final R repository;
+	private final Function<Integer, Mono<E>> findById;
+	private final DAO dao;
 
-	public AbstractECommerceCRUDService(final R repository) {
-		this.repository = repository;
+	public AbstractECommerceCRUDService(final DAO dao) {
+//		this.repository = repository;
 		this.findById = provideFindByIdFunction();
-//		this.mapper = this.provideObjectMapper();
-//		this.dtoClass = this.provideDTOClass();
-//		this.entityClass = this.provideEntityClass();
+		this.dao = dao;
 	}
 
 	@Override
 	public DTO createECommerceEntity(final DTO dto) {
 		try {
-//			final E entity = this.modelMapper.map(dto, entityClass);
 			final E entity = this.provideObjectMapper().dtoToEntity(dto);
-			repository.save(entity);
-//			final DTO dtoToReturn = this.modelMapper.map(entity, dtoClass);
-			final DTO dtoToReturn = this.provideObjectMapper().entityToDTO(entity);
+			final DTO dtoToReturn = this.provideObjectMapper().entityToDTO(dao.save(entity));
 
 			return dtoToReturn;
 		} catch (final DuplicateKeyException e) {
@@ -59,38 +53,33 @@ public abstract class AbstractECommerceCRUDService<
 	}
 
 	@Override
-	public void deleteECommerceEntity(final int id) {
-		// log.debug("deleteECommerceEntity: tries to delete an entity with id: {}", id);
-		this.findById.apply(id).ifPresent(repository::delete);
+	public Mono<Void> deleteECommerceEntity(final int id) {
+		/*-
+		log.debug("deleteECommerceEntity: tries to delete an entity with id: {}", id);
+		return this.findById.apply(id)
+			.map(repository::delete)
+			.flatMap(e -> e);
+		*/
+		return null;
 	}
 
 	@Override
-	public DTO getECommerceEntity(final int id) {
+	public Mono<DTO> getECommerceEntity(final int id) {
 
+		/*-
 		if (id < 1) {
 			throw new InvalidInputException("Invalid id: " + id);
 		}
-
-		final E entity = this.findById.apply(id)
-			.orElseThrow(() -> new NotFoundException("No entity found for id: " + id));
-
-//		final DTO response = this.modelMapper.map(entity, dtoClass);
-		final DTO response = this.provideObjectMapper().entityToDTO(entity);
-		// response.setServiceAddress(serviceUtil.getServiceAddress());
-
-		// log.debug("getProduct: found productId: {}", response.getObjectId());
-
-		return response;
+		
+		return this.findById.apply(id)
+			.switchIfEmpty(Mono.error(new NotFoundException("No entity found for id: " + id)))
+			.map(e -> this.provideObjectMapper().entityToDTO(e));
+		*/
+		return null;
 	}
 
-	protected abstract Function<Integer, Optional<E>> provideFindByIdFunction();
+	protected abstract Function<Integer, Mono<E>> provideFindByIdFunction();
 
 	protected abstract M provideObjectMapper();
-
-	/*-
-	protected abstract Class<E> provideEntityClass();
-	
-	protected abstract Class<DTO> provideDTOClass();
-	*/
 
 }

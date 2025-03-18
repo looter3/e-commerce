@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.ecommerce.common.dto.ProductDTO;
 
+import reactor.core.publisher.Mono;
+
 /**
  * @author Lorenzo Leccese
  *
@@ -17,12 +19,12 @@ import com.ecommerce.common.dto.ProductDTO;
 public interface ProductAPI {
 
 	@GetMapping(value = "/product/{productId}", produces = "application/json")
-	ProductDTO getProduct(@PathVariable int productId);
+	Mono<ProductDTO> getProduct(@PathVariable int productId);
 
 	@PostMapping(value = { "/product", "/product/" }, consumes = "application/json")
-	void createProduct(@RequestBody ProductDTO body);
+	ProductDTO createProduct(@RequestBody ProductDTO body);
 
 	@DeleteMapping(value = "/product/{productId}")
-	void deleteProduct(@PathVariable int productId);
+	Mono<Void> deleteProduct(@PathVariable int productId);
 
 }

@@ -17,6 +17,12 @@
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		
+	    <dependency>
+	    	<groupId>com.ecommerce</groupId>
+	    	<artifactId>e-commerce-kafka-utils</artifactId>
+	    	<version>0.0.1-SNAPSHOT</version>
+	    </dependency>
+		
 		<dependency>
     		<groupId>org.mapstruct</groupId>
     		<artifactId>mapstruct</artifactId>

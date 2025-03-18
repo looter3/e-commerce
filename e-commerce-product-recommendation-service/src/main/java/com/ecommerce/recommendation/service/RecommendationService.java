@@ -1,18 +1,18 @@
 package com.ecommerce.recommendation.service;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.ecommerce.common.dao.ECommerceDAO;
 import com.ecommerce.common.dto.RecommendationDTO;
 import com.ecommerce.common.service.AbstractECommerceCRUDService;
 import com.ecommerce.recommendation.model.Recommendation;
-import com.ecommerce.recommendation.repository.RecommendationRepository;
 
 import lombok.extern.log4j.Log4j2;
+
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * @author Lorenzo Leccese
@@ -22,49 +22,47 @@ import lombok.extern.log4j.Log4j2;
  */
 @Service
 @Log4j2
-public class RecommendationService extends AbstractECommerceCRUDService<RecommendationDTO, Recommendation, RecommendationMapper, RecommendationRepository> {
+public class RecommendationService
+		extends
+		AbstractECommerceCRUDService<RecommendationDTO, Recommendation, RecommendationMapper, ECommerceDAO<Recommendation>> {
 
 	private final RecommendationMapper mapper;
 
-	public RecommendationService(final RecommendationRepository repository, final RecommendationMapper mapper) {
-		super(repository);
+	public RecommendationService(final ECommerceDAO<Recommendation> dao, final RecommendationMapper mapper) {
+		super(dao);
 		this.mapper = mapper;
 	}
 
-	public List<RecommendationDTO> getAllRecommendationsByProductId(final int productId) {
+	public Flux<RecommendationDTO> getAllRecommendationsByProductId(final int productId) {
 
+		/*-
 		return this.repository.findByProductId(productId)
-			.stream()
+		//			.stream()
 			.parallel()
 			.map(entity -> this.mapper.entityToDTO(entity))
-			.collect(Collectors.toList());
+			.sequential()
+		//			.collectList()
+		//			.blockOptional().orElse(Collections.emptyList())
+		;
+		*/
+		return null;
 
 	}
 
-	public void deleteRecommendationsByProductId(final int productId) {
-		repository.deleteAll(repository.findByProductId(productId));
+	public Mono<Void> deleteRecommendationsByProductId(final int productId) {
+//		return repository.deleteAll(repository.findByProductId(productId));
+		return null;
 	}
 
 	@Override
-	protected Function<Integer, Optional<Recommendation>> provideFindByIdFunction() {
-		return this.repository::findByRecommendationId;
+	protected Function<Integer, Mono<Recommendation>> provideFindByIdFunction() {
+//		return this.repository::findByRecommendationId;
+		return null;
 	}
 
 	@Override
 	protected RecommendationMapper provideObjectMapper() {
 		return this.mapper;
 	}
-
-	/*-
-	@Override
-	protected Class<Recommendation> provideEntityClass() {
-		return Recommendation.class;
-	}
-
-	@Override
-	protected Class<RecommendationDTO> provideDTOClass() {
-		return RecommendationDTO.class;
-	}
-	*/
 
 }

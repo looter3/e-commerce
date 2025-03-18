@@ -1,11 +1,14 @@
 package com.ecommerce.common.dto;
 
+import lombok.NoArgsConstructor;
+
 /**
  * @author Lorenzo Leccese
  *
  *         1 feb 2025
  *
  */
+@NoArgsConstructor
 public class ProductDTO extends ECommerceDTO {
 
 	private int productId;

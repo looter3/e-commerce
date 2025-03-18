@@ -1,0 +1,29 @@
+@startuml
+
+!include <C4/C4_Container>
+
+Person(pe1, "User")
+"Browse product catalog" as (use1)
+Rel(pe1, (use1),)
+
+Person(pe2, "User")
+"Add products to cart" as (use2)
+Rel(pe2, (use2),)
+
+Person(pe3, "User")
+"Place order" as (use3)
+Rel(pe3, (use3),)
+
+Person(pe4, "User")
+"Uses payment gateway" as (use4)
+Rel(pe4, (use4),)
+
+Person(pe5, "User")
+"Track shipping" as (use5)
+Rel(pe5, (use5),)
+
+Person(pe6, "User")
+"Review products" as (use6)
+Rel(pe6, (use6),)
+
+@enduml

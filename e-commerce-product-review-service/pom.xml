@@ -25,7 +25,7 @@
     		<version>1.5.3.Final</version>
 		</dependency>
 		
-				<dependency>
+		<dependency>
 		    <groupId>org.mapstruct</groupId>
 		    <artifactId>mapstruct-processor</artifactId>
 		    <version>1.5.3.Final</version>
@@ -42,7 +42,12 @@
 	        <artifactId>mongodb</artifactId>
 	        <scope>test</scope>
 	    </dependency>
-	
+
+	    <dependency>
+	    	<groupId>com.ecommerce</groupId>
+	    	<artifactId>e-commerce-kafka-utils</artifactId>
+	    	<version>0.0.1-SNAPSHOT</version>
+	    </dependency>
 	</dependencies>
 	
 	<build>

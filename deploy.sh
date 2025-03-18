@@ -11,7 +11,7 @@ echo 'Build project'
 mvn clean package
 
 
-docker_projects=("e-commerce-product-service" "e-commerce-product-recommendation-service" "e-commerce-product-review-service" "e-commerce-product-composite-service")
+docker_projects=("e-commerce-product-service" "e-commerce-product-recommendation-service" "e-commerce-product-review-service" "e-commerce-product-composite-service" "e-commerce-discovery-service")
 # Compile docker images
 for project in "${docker_projects[@]}"; do
     echo "Compiling docker image for: $project"

@@ -69,4 +69,9 @@ public class Recommendation extends ECommerceEntity {
 		this.content = content;
 	}
 
+	@Override
+	public int provideEntityId() {
+		return this.recommendationId;
+	}
+
 }

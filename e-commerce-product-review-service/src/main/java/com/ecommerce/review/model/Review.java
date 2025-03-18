@@ -72,4 +72,9 @@ public class Review extends ECommerceEntity {
 		this.subject = subject;
 	}
 
+	@Override
+	public int provideEntityId() {
+		return this.reviewId;
+	}
+
 }

@@ -8,6 +8,8 @@ import com.ecommerce.product.service.ProductService;
 
 import lombok.RequiredArgsConstructor;
 
+import reactor.core.publisher.Mono;
+
 /**
  * @author Lorenzo Leccese
  *
@@ -27,18 +29,18 @@ public class ProductController implements ProductAPI {
 	*/
 
 	@Override
-	public ProductDTO getProduct(final int productId) {
+	public Mono<ProductDTO> getProduct(final int productId) {
 		return this.productService.getECommerceEntity(productId);
 	}
 
 	@Override
-	public void createProduct(final ProductDTO body) {
-		this.productService.createECommerceEntity(body);
+	public ProductDTO createProduct(final ProductDTO body) {
+		return this.productService.createECommerceEntity(body);
 	}
 
 	@Override
-	public void deleteProduct(final int productId) {
-		this.productService.deleteECommerceEntity(productId);
+	public Mono<Void> deleteProduct(final int productId) {
+		return this.productService.deleteECommerceEntity(productId);
 	}
 
 }

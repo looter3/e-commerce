@@ -1,10 +1,39 @@
-spring.application.name: product-service
-server.port: 7001
+com:
+  ecommerce:
+    topics:
+      create-entity-topic:
+        in: create-product-in
+        out: create-product-out
 
-spring.data.mongodb:
-  host: localhost
-  port: 27017
-  database: product-db
+server:
+  port: 7001
+  error.include-message: always
+
+app.eureka-server: localhost
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${app.eureka-server}:8761/eureka/
+    initialInstanceInfoReplicationIntervalSeconds: 5
+    registryFetchIntervalSeconds: 5
+  instance:
+    leaseRenewalIntervalInSeconds: 5
+    leaseExpirationDurationInSeconds: 5
+
+spring:
+  application:
+    name: product-service
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: product-db
+  kafka:
+    bootstrap-servers: localhost:9092
+    streams:
+      bootstrap-servers: localhost:9092
+      application-id: "product-stream-id"
 
 logging:
   level:
@@ -13,11 +42,49 @@ logging:
     org.springframework.data.mongodb.core.MongoTemplate: DEBUG
 
 ---
-spring.config.activate.on-profile: docker
-server.port: 8080
 
-spring.data.mongodb:
-  host: mongodb
-  port: 27017
-#  uri: mongodb://172.17.0.2:27017/product-db
-  database: product-db
+spring.config.activate.on-profile: docker
+server:
+  port: 8080
+
+app.eureka-server: eureka
+
+spring:
+  data:
+    mongodb:
+      host: mongodb  # Docker container name for MongoDB
+      port: 27017
+      database: product-db
+
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: kafka:29092  # Docker-internal Kafka communication
+
+  kafka:
+    bootstrap-servers: kafka:29092  # Connect to Kafka using the internal Docker port
+    streams:
+      bootstrap-servers: kafka:29092
+      application-id: "product-stream-id"
+
+---
+
+spring.config.activate.on-profile: kafka
+
+spring:
+  kafka:
+    bootstrap-servers: kafka:9092  # Kafka container name for Docker environment
+    properties:
+      reconnect.backoff.ms: 500
+      retry.backoff.ms: 500
+    producer:
+      retries: 2
+      request-timeout-ms: 2000
+      max-block-ms: 3000
+    consumer:
+      max-poll-interval-ms: 15000
+      session-timeout-ms: 10000
+    streams:
+      bootstrap-servers: kafka:9092
+      application-id: "product-stream-id"

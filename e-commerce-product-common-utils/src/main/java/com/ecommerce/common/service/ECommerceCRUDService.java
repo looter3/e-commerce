@@ -2,6 +2,8 @@ package com.ecommerce.common.service;
 
 import com.ecommerce.common.dto.ECommerceDTO;
 
+import reactor.core.publisher.Mono;
+
 /**
  * @author Lorenzo Leccese
  *
@@ -14,9 +16,9 @@ public interface ECommerceCRUDService<DTO extends ECommerceDTO> {
 	DTO createECommerceEntity(DTO dto);
 
 	// Delete
-	void deleteECommerceEntity(int id);
+	Mono<Void> deleteECommerceEntity(int id);
 
 	// Read
-	DTO getECommerceEntity(int id);
+	Mono<DTO> getECommerceEntity(int id);
 
 }
