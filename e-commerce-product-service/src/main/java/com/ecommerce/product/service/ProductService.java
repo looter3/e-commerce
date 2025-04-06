@@ -1,15 +1,11 @@
 package com.ecommerce.product.service;
 
-import java.util.function.Function;
-
 import org.springframework.stereotype.Service;
 
-import com.ecommerce.common.dao.ECommerceDAO;
-import com.ecommerce.common.dto.ProductDTO;
-import com.ecommerce.common.service.AbstractECommerceCRUDService;
+import com.ecommerce.common.mongodb.dao.ECommerceDAO;
+import com.ecommerce.common.service.ProductAwareService;
+import com.ecommerce.kafka.dto.ProductDTO;
 import com.ecommerce.product.model.Product;
-
-import reactor.core.publisher.Mono;
 
 /**
  * @author Lorenzo Leccese
@@ -19,7 +15,7 @@ import reactor.core.publisher.Mono;
  */
 @Service
 public class ProductService
-		extends AbstractECommerceCRUDService<ProductDTO, Product, ProductMapper, ECommerceDAO<Product>> {
+		extends ProductAwareService<ProductDTO, Product, ProductMapper, ECommerceDAO<Product>> {
 
 	private final ProductMapper mapper;
 
@@ -29,26 +25,13 @@ public class ProductService
 	}
 
 	@Override
-	protected Function<Integer, Mono<Product>> provideFindByIdFunction() {
-//		return this.repository::findByProductId;
-		return null;
+	public void deleteByProductId(final int productId) {
+		this.dao.deleteByIntegerValue(productId, "productId", Product.class);
 	}
 
 	@Override
 	protected ProductMapper provideObjectMapper() {
 		return this.mapper;
 	}
-
-	/*-
-	@Override
-	protected Class<Product> provideEntityClass() {
-		return Product.class;
-	}
-	
-	@Override
-	protected Class<ProductDTO> provideDTOClass() {
-		return ProductDTO.class;
-	}
-	*/
 
 }

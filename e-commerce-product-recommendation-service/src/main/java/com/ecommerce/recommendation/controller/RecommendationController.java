@@ -3,7 +3,7 @@ package com.ecommerce.recommendation.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ecommerce.common.api.RecommendationAPI;
-import com.ecommerce.common.dto.RecommendationDTO;
+import com.ecommerce.kafka.dto.RecommendationDTO;
 import com.ecommerce.recommendation.service.RecommendationService;
 
 import lombok.RequiredArgsConstructor;
@@ -36,7 +36,8 @@ public class RecommendationController implements RecommendationAPI {
 
 	@Override
 	public Mono<Void> deleteRecommendationsByProductId(final int productId) {
-		return this.service.deleteRecommendationsByProductId(productId);
+		this.service.deleteByProductId(productId);
+		return null;
 	}
 
 }

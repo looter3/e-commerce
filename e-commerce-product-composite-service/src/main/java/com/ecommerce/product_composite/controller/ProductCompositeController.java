@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ecommerce.common.api.ProductCompositeAPI;
-import com.ecommerce.common.dto.ProductAggregateDTO;
+import com.ecommerce.kafka.dto.ProductAggregateDTO;
+import com.ecommerce.kafka.request.ECommerceKafkaRequest;
+import com.ecommerce.kafka.request.SimpleCRUDRequest;
 import com.ecommerce.product_composite.service.ProductCompositeService;
 
 import lombok.RequiredArgsConstructor;
@@ -24,16 +26,24 @@ import reactor.core.publisher.Mono;
 //@Log4j2
 public class ProductCompositeController implements ProductCompositeAPI {
 
-	private final ProductCompositeService integration;
+	private final ProductCompositeService service;
 
 	@Override
 	public ResponseEntity<ProductAggregateDTO> createProduct(final ProductAggregateDTO body) {
-		return new ResponseEntity<>(integration.createCompositeProduct(body), HttpStatus.OK);
+
+		final ECommerceKafkaRequest request = new ECommerceKafkaRequest(SimpleCRUDRequest.CREATE, body);
+		service.getKafkaTemplate().send("product-composite-service-in", request);
+
+		return new ResponseEntity<>(body, HttpStatus.OK);
+//		return new ResponseEntity<>(service.createECommerceEntity(body), HttpStatus.OK);
 	}
 
 	@Override
-	public Mono<Void> deleteProduct(final int productId) {
-		return null;
+	public ResponseEntity<Void> deleteProduct(final int productId) {
+		final ECommerceKafkaRequest request = new ECommerceKafkaRequest(SimpleCRUDRequest.DELETE, productId);
+		service.getKafkaTemplate().send("product-composite-service-in", request);
+
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@Override

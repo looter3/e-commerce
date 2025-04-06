@@ -1,32 +1,17 @@
 package com.ecommerce.product.controller;
 
-import org.springframework.web.bind.annotation.RestController;
-
-import com.ecommerce.common.api.ProductAPI;
-import com.ecommerce.common.dto.ProductDTO;
-import com.ecommerce.product.service.ProductService;
-
-import lombok.RequiredArgsConstructor;
-
-import reactor.core.publisher.Mono;
-
 /**
  * @author Lorenzo Leccese
  *
  *         1 feb 2025
  *
  */
+/*-
 @RestController
 @RequiredArgsConstructor
 public class ProductController implements ProductAPI {
 
 	private final ProductService productService;
-
-	/*-
-	public ProductController(final ProductService productService) {
-		this.productService = productService;
-	}
-	*/
 
 	@Override
 	public Mono<ProductDTO> getProduct(final int productId) {
@@ -44,3 +29,4 @@ public class ProductController implements ProductAPI {
 	}
 
 }
+*/

@@ -2,7 +2,7 @@ package com.ecommerce.review.service;
 
 import org.mapstruct.Mapper;
 
-import com.ecommerce.common.dto.ReviewDTO;
+import com.ecommerce.kafka.dto.ReviewDTO;
 import com.ecommerce.common.mapper.ECommerceEntityMapper;
 import com.ecommerce.review.model.Review;
 

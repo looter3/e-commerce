@@ -2,11 +2,10 @@ package com.ecommerce.recommendation.kafka;
 
 import org.springframework.stereotype.Component;
 
-import com.ecommerce.common.dto.RecommendationDTO;
+import com.ecommerce.kafka.dto.RecommendationDTO;
+import com.ecommerce.kafka.config.KafkaTopicConfiguration;
 import com.ecommerce.kafka.topology.AbstractTopology;
 import com.ecommerce.recommendation.service.RecommendationService;
-
-import lombok.RequiredArgsConstructor;
 
 /**
  * @author Lorenzo Leccese
@@ -15,14 +14,11 @@ import lombok.RequiredArgsConstructor;
  *
  */
 @Component
-@RequiredArgsConstructor
-public class RecommendationTopology extends AbstractTopology<RecommendationDTO> {
+//@RequiredArgsConstructor
+public class RecommendationTopology extends AbstractTopology<RecommendationDTO, RecommendationService> {
 
-	private final RecommendationService service;
-
-	@Override
-	protected RecommendationDTO onCreateEntity(final RecommendationDTO dto) {
-		return service.createECommerceEntity(dto);
+	public RecommendationTopology(final RecommendationService service, final KafkaTopicConfiguration kafkaTopicConfiguration) {
+		super(service, kafkaTopicConfiguration);
 	}
 
 	@Override
@@ -31,18 +27,23 @@ public class RecommendationTopology extends AbstractTopology<RecommendationDTO> 
 	}
 
 	/*-
-	@Bean
-	KStream<String, String> createReview(final StreamsBuilder kStreamBuilder) {
-	
-		final KStream<String, RecommendationDTO> stream = kStreamBuilder.stream("create-recommendation-in",
-				Consumed.with(Serdes.String(), new JsonSerde<>(RecommendationDTO.class)));
-	
-		stream.mapValues(service::createECommerceEntity).to("create-recommendation-out");
-	
-		// Return "COMPLETED" after all messages are sent
-		return stream.mapValues(value -> "COMPLETED");
-	
-	}
-	*/
+	private final RecommendationService service;
 
+	@Override
+	protected RecommendationDTO onCreateEntity(final RecommendationDTO dto) {
+		return service.createECommerceEntity(dto);
+	}
+
+	@Override
+	protected RecommendationDTO onDeleteEntity(final RecommendationDTO dto) {
+		return service.deleteECommerceEntity(dto);
+	}
+
+	@Override
+	protected RecommendationDTO onReadEntity(final RecommendationDTO dto) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	*/
 }

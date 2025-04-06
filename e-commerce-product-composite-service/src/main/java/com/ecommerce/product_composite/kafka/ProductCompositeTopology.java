@@ -2,11 +2,10 @@ package com.ecommerce.product_composite.kafka;
 
 import org.springframework.stereotype.Component;
 
-import com.ecommerce.common.dto.ProductAggregateDTO;
+import com.ecommerce.kafka.dto.ProductAggregateDTO;
+import com.ecommerce.kafka.config.KafkaTopicConfiguration;
 import com.ecommerce.kafka.topology.AbstractTopology;
 import com.ecommerce.product_composite.service.ProductCompositeService;
-
-import lombok.RequiredArgsConstructor;
 
 /**
  * @author Lorenzo Leccese
@@ -15,15 +14,12 @@ import lombok.RequiredArgsConstructor;
  *
  */
 @Component
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 //@Log4j2
-public class ProductCompositeTopology extends AbstractTopology<ProductAggregateDTO> {
+public class ProductCompositeTopology extends AbstractTopology<ProductAggregateDTO, ProductCompositeService> {
 
-	private final ProductCompositeService service;
-
-	@Override
-	protected ProductAggregateDTO onCreateEntity(final ProductAggregateDTO dto) {
-		return service.createCompositeProduct(dto);
+	public ProductCompositeTopology(final ProductCompositeService service, final KafkaTopicConfiguration kafkaTopicConfiguration) {
+		super(service, kafkaTopicConfiguration);
 	}
 
 	@Override
@@ -31,4 +27,28 @@ public class ProductCompositeTopology extends AbstractTopology<ProductAggregateD
 		return ProductAggregateDTO.class;
 	}
 
+//	private final ProductCompositeService service;
+
+	/*-
+	public ProductCompositeTopology(final ProductCompositeService service) {
+		super(service);
+	}
+	
+	@Override
+	protected ProductAggregateDTO onCreateEntity(final ProductAggregateDTO dto) {
+	//		return service.createCompositeProduct(dto);
+	}
+
+	@Override
+	protected ProductAggregateDTO onDeleteEntity(final ProductAggregateDTO dto) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	protected ProductAggregateDTO onReadEntity(final ProductAggregateDTO dto) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	*/
 }

@@ -3,7 +3,7 @@ package com.ecommerce.product.config;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
-import com.ecommerce.common.config.AbstractMongoConfiguration;
+import com.ecommerce.common.mongodb.config.AbstractMongoConfiguration;
 
 /**
  * @author Lorenzo Leccese

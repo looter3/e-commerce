@@ -3,7 +3,7 @@ package com.ecommerce.review.model;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.ecommerce.common.entity.ECommerceEntity;
+import com.ecommerce.common.mongodb.entity.ECommerceEntity;
 
 /**
  * @author Lorenzo Leccese

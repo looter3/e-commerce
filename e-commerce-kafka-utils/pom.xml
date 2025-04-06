@@ -23,9 +23,29 @@
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
         </dependency>
-        <dependency>
+        <!--dependency>
         	<groupId>com.ecommerce</groupId>
         	<artifactId>e-commerce-product-common-utils</artifactId>
+        	<version>0.0.1-SNAPSHOT</version>
+        </dependency -->
+        <dependency>
+        	<groupId>com.ecommerce</groupId>
+        	<artifactId>e-commerce-kafka-messaging</artifactId>
+        	<version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+        	<groupId>com.ecommerce</groupId>
+        	<artifactId>e-commerce-common-dto</artifactId>
+        	<version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+        	<groupId>com.ecommerce</groupId>
+        	<artifactId>e-commerce-common-services</artifactId>
+        	<version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+        	<groupId>com.ecommerce</groupId>
+        	<artifactId>e-commerce-common-commands</artifactId>
         	<version>0.0.1-SNAPSHOT</version>
         </dependency>
 	</dependencies>

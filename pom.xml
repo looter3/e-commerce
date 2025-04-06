@@ -24,7 +24,12 @@
     <module>e-commerce-product-service</module>
     <module>e-commerce-product-recommendation-service</module>
     <module>e-commerce-product-review-service</module>
-    <module>e-commerce-product-common-utils</module>
+      <module>e-commerce-common-services</module>
+      <module>e-commerce-common-dto</module>
+      <module>e-commerce-kafka-messaging</module>
+      <module>e-commerce-common-mongodb</module>
+      <module>e-commerce-error-utils</module>
+      <module>e-commerce-common-commands</module>
   </modules>
   
   <dependencies>

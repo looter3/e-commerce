@@ -2,11 +2,10 @@ package com.ecommerce.product.kafka;
 
 import org.springframework.stereotype.Component;
 
-import com.ecommerce.common.dto.ProductDTO;
+import com.ecommerce.kafka.dto.ProductDTO;
+import com.ecommerce.kafka.config.KafkaTopicConfiguration;
 import com.ecommerce.kafka.topology.AbstractTopology;
 import com.ecommerce.product.service.ProductService;
-
-import lombok.RequiredArgsConstructor;
 
 /**
  * @author Lorenzo Leccese
@@ -15,15 +14,12 @@ import lombok.RequiredArgsConstructor;
  *
  */
 @Component
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 //@Log4j2
-public class ProductTopology extends AbstractTopology<ProductDTO> {
+public class ProductTopology extends AbstractTopology<ProductDTO, ProductService> {
 
-	private final ProductService service;
-
-	@Override
-	protected ProductDTO onCreateEntity(final ProductDTO dto) {
-		return service.createECommerceEntity(dto);
+	public ProductTopology(final ProductService service, final KafkaTopicConfiguration kafkaTopicConfiguration) {
+		super(service, kafkaTopicConfiguration);
 	}
 
 	@Override
@@ -31,4 +27,21 @@ public class ProductTopology extends AbstractTopology<ProductDTO> {
 		return ProductDTO.class;
 	}
 
+//	private final ProductService service;
+	/*-
+		@Override
+		protected ProductDTO onCreateEntity(final ProductDTO dto) {
+			return service.createECommerceEntity(dto);
+		}
+	
+		@Override
+		protected ProductDTO onDeleteEntity(final ProductDTO dto) {
+			return service.deleteECommerceEntity(dto);
+		}
+	
+		@Override
+		protected ProductDTO onReadEntity(final ProductDTO dto) {
+			return null;
+		}
+		*/
 }

@@ -22,7 +22,7 @@ import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JsonSerde;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
-import com.ecommerce.common.dto.ECommerceDTO;
+import com.ecommerce.kafka.dto.ECommerceDTO;
 
 import lombok.Data;
 

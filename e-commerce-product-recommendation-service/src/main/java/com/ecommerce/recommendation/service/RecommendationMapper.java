@@ -2,7 +2,7 @@ package com.ecommerce.recommendation.service;
 
 import org.mapstruct.Mapper;
 
-import com.ecommerce.common.dto.RecommendationDTO;
+import com.ecommerce.kafka.dto.RecommendationDTO;
 import com.ecommerce.common.mapper.ECommerceEntityMapper;
 import com.ecommerce.recommendation.model.Recommendation;
 

@@ -1,0 +1,23 @@
+@startuml
+
+' Actors
+abstract AbstractECommerceKafkaRequest {
+    - requestType : RequestType
+    - dataToSend : Object
+}
+
+interface RequestType
+enum CRUDRequest {
+    CREATE,
+    READ,
+    UPDATE,
+    DELETE
+}
+note "Parametric on Request type" as n1
+
+' Relationships
+AbstractECommerceKafkaRequest ..> RequestType
+RequestType <|.. CRUDRequest
+n1 .. AbstractECommerceKafkaRequest
+
+@enduml

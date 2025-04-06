@@ -1,15 +1,11 @@
 package com.ecommerce.review.service;
 
-import java.util.function.Function;
-
 import org.springframework.stereotype.Service;
 
-import com.ecommerce.common.dao.ECommerceDAO;
-import com.ecommerce.common.dto.ReviewDTO;
-import com.ecommerce.common.service.AbstractECommerceCRUDService;
+import com.ecommerce.common.mongodb.dao.ECommerceDAO;
+import com.ecommerce.common.service.ProductAwareService;
+import com.ecommerce.kafka.dto.ReviewDTO;
 import com.ecommerce.review.model.Review;
-
-import reactor.core.publisher.Mono;
 
 /**
  * @author Lorenzo Leccese
@@ -18,7 +14,7 @@ import reactor.core.publisher.Mono;
  *
  */
 @Service
-public class ReviewService extends AbstractECommerceCRUDService<ReviewDTO, Review, ReviewMapper, ECommerceDAO<Review>> {
+public class ReviewService extends ProductAwareService<ReviewDTO, Review, ReviewMapper, ECommerceDAO<Review>> {
 
 	private final ReviewMapper mapper;
 
@@ -27,28 +23,10 @@ public class ReviewService extends AbstractECommerceCRUDService<ReviewDTO, Revie
 		this.mapper = mapper;
 	}
 
-	public Mono<Void> deleteReviewsByProductId(final int productId) {
-//		return repository.deleteAll(repository.findByProductId(productId));
-		return null;
-	}
-
 	@Override
-	protected Function<Integer, Mono<Review>> provideFindByIdFunction() {
-//		return this.repository::findByReviewId;
-		return null;
+	public void deleteByProductId(final int productId) {
+		this.dao.deleteByIntegerValue(productId, "productId", Review.class);
 	}
-
-	/*-
-	@Override
-	protected Class<Review> provideEntityClass() {
-		return Review.class;
-	}
-	
-	@Override
-	protected Class<ReviewDTO> provideDTOClass() {
-		return ReviewDTO.class;
-	}
-	*/
 
 	@Override
 	protected ReviewMapper provideObjectMapper() {

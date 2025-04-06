@@ -1,18 +1,15 @@
 package com.ecommerce.recommendation.service;
 
-import java.util.function.Function;
-
 import org.springframework.stereotype.Service;
 
-import com.ecommerce.common.dao.ECommerceDAO;
-import com.ecommerce.common.dto.RecommendationDTO;
-import com.ecommerce.common.service.AbstractECommerceCRUDService;
+import com.ecommerce.common.mongodb.dao.ECommerceDAO;
+import com.ecommerce.common.service.ProductAwareService;
+import com.ecommerce.kafka.dto.RecommendationDTO;
 import com.ecommerce.recommendation.model.Recommendation;
 
 import lombok.extern.log4j.Log4j2;
 
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /**
  * @author Lorenzo Leccese
@@ -24,13 +21,18 @@ import reactor.core.publisher.Mono;
 @Log4j2
 public class RecommendationService
 		extends
-		AbstractECommerceCRUDService<RecommendationDTO, Recommendation, RecommendationMapper, ECommerceDAO<Recommendation>> {
+		ProductAwareService<RecommendationDTO, Recommendation, RecommendationMapper, ECommerceDAO<Recommendation>> {
 
 	private final RecommendationMapper mapper;
 
 	public RecommendationService(final ECommerceDAO<Recommendation> dao, final RecommendationMapper mapper) {
 		super(dao);
 		this.mapper = mapper;
+	}
+
+	@Override
+	public void deleteByProductId(final int productId) {
+		this.dao.deleteByIntegerValue(productId, "productId", Recommendation.class);
 	}
 
 	public Flux<RecommendationDTO> getAllRecommendationsByProductId(final int productId) {
@@ -47,17 +49,6 @@ public class RecommendationService
 		*/
 		return null;
 
-	}
-
-	public Mono<Void> deleteRecommendationsByProductId(final int productId) {
-//		return repository.deleteAll(repository.findByProductId(productId));
-		return null;
-	}
-
-	@Override
-	protected Function<Integer, Mono<Recommendation>> provideFindByIdFunction() {
-//		return this.repository::findByRecommendationId;
-		return null;
 	}
 
 	@Override

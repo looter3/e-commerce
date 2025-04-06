@@ -3,12 +3,12 @@ package com.ecommerce.product_composite.helper;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.ecommerce.common.dto.ProductAggregateDTO;
-import com.ecommerce.common.dto.ProductDTO;
-import com.ecommerce.common.dto.RecommendationDTO;
-import com.ecommerce.common.dto.RecommendationSummaryDTO;
-import com.ecommerce.common.dto.ReviewDTO;
-import com.ecommerce.common.dto.ReviewSummaryDTO;
+import com.ecommerce.kafka.dto.ProductAggregateDTO;
+import com.ecommerce.kafka.dto.ProductDTO;
+import com.ecommerce.kafka.dto.RecommendationDTO;
+import com.ecommerce.kafka.dto.RecommendationSummaryDTO;
+import com.ecommerce.kafka.dto.ReviewDTO;
+import com.ecommerce.kafka.dto.ReviewSummaryDTO;
 
 /**
  * @author Lorenzo Leccese
